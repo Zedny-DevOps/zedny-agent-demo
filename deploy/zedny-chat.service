@@ -1,0 +1,37 @@
+[Unit]
+Description=Zedny Gemma-4 Chat Stack (FastAPI + Streamlit + Modal)
+Documentation=file:///opt/zedny-agent-demo/deploy/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zedny
+Group=zedny
+WorkingDirectory=/opt/zedny-agent-demo
+Environment=PYTHONUNBUFFERED=1
+Environment=HOME=/home/zedny
+
+# run.py auto-bootstraps a venv and brings up backend + frontend.
+# --no-browser:    headless server, never try to open a browser
+# --skip-deploy:   the Modal app is deployed once during initial setup
+# --skip-download: model weights are downloaded once during initial setup
+ExecStart=/usr/bin/python3 run.py --no-browser --skip-deploy --skip-download
+
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+
+# Hardening — sane defaults for a non-root service.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/opt/zedny-agent-demo
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=zedny-chat
+
+[Install]
+WantedBy=multi-user.target
