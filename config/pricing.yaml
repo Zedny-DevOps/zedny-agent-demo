@@ -1,0 +1,5 @@
+# Per-1K-token cost in USD. Edit freely — read at backend startup.
+# These are placeholder rates; set them to match your real economics
+# (e.g., amortized A100-80GB Modal cost / observed throughput).
+input_per_1k: 0.30
+output_per_1k: 0.60
